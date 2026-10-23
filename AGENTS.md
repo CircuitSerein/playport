@@ -3,7 +3,8 @@
 An iOS app that runs x86-64 Windows games on a non-jailbroken iPhone. It is
 built on [willfaust/Madeira](https://github.com/willfaust/Madeira): Wine
 (ARM64EC), FEX-Emu and DXMT as one Mach process. Everything builds, signs and
-installs from one Linux workstation, with no Mac. This file covers how to
+installs from a Linux workstation or, in this fork, natively from macOS
+with Xcode's SDK (see `docs/BUILDING.md`). This file covers how to
 work here: build, ship, test. Reference material is in `docs/`, listed at the
 end.
 
@@ -22,7 +23,10 @@ end.
 
 ## Rules
 
-- **Linear tracks everything.** Team PLA is the source of truth for planned work,
+- **Fork tracking.** This fork tracks requested changes and their checks in pull
+  requests on its own GitHub repository. It does not require access to upstream's
+  Linear team. The following Linear workflow describes upstream only.
+- **Upstream: Linear tracks everything.** Team PLA is the source of truth for planned work,
   bugs, follow-ups and release handoffs, not just compatibility reports. Every plan
   (including drafts under `.work/plans/`) must be reflected in a Linear issue when
   written, before commit or execution: search first and reuse an issue that covers

@@ -61,6 +61,9 @@ before playing. --dry-run prints UI_ACTIONS without accessing the phone:
                          its first one is the `first window` mark, --until mark:first window+S;
                          or a dialog it opens after it, decision 0076, --until mark:dialog shown+S)
                          while one is shown, else on the game
+  touch:A+ls-left@500     while playing: hold on-screen controls for 1–10000 ms (default 250).
+                         ABXY, LB/RB/LT/RT, L3/R3, Back/Start, up/down/left/right;
+                         ls-/rs-left/right/up/down move a stick. Requires the visible on-screen pad.
   menu:open              after a play: (the actions after it then run while the game runs): wait for
                          the game's first frame, then hold the controller's Home button 0.8 s through
                          HostIO's pad handling, which opens Playport's in-game menu over the paused

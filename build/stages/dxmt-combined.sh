@@ -25,8 +25,8 @@
 # prefix maps).
 set -euo pipefail
 
-ROOT=$(realpath -m "${1:?usage: $0 ROOT}")
 . "$(dirname "$0")/../lib.sh"
+ROOT=$(realpath -m "${1:?usage: $0 ROOT}")
 DXMT_UNIX=$(realpath "${DXMT_UNIX:?set DXMT_UNIX to a stages/dxmt-patched.sh ROOT}")
 TBLGEN=${TBLGEN:?set TBLGEN to an LLVM 15.0.7 llvm-tblgen}
 LLVM_TAG=$(pin llvm-project)
