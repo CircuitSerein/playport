@@ -164,6 +164,14 @@ stage_inputs() {
         { say "LLVM_MINGW has no arm64ec CRT rebuild (docs/BUILDING.md, llvm-mingw)"; missing=1; }
     [ -d "$IOSSDK" ] && [ -d "$MACSDK" ] || { say "missing SDKs under DARWIN_SDK: $DARWIN_SDK"; missing=1; }
     [ "$missing" = 0 ] || exit 1
+    if [ "$(uname -s)" = Darwin ] && [ ! -x "$PRELINK_LD64" ]; then
+        [ "$PRELINK_LD64" = "$PLAYPORT_BUILD/inputs/apple-linker/prefix/bin/arm64-apple-darwin-ld" ] || {
+            say "missing PRELINK_LD64: $PRELINK_LD64"; exit 1;
+        }
+        say "building classic archive prelinker (build/toolchain/ld64.sh; log: $RUN/logs/ld64.log)"
+        bash "$HERE/toolchain/ld64.sh" > "$RUN/logs/ld64.log" 2>&1 || { say "archive prelinker build failed"; exit 1; }
+        [ -x "$PRELINK_LD64" ] || { say "missing PRELINK_LD64: $PRELINK_LD64"; exit 1; }
+    fi
     # ld64 and the patched xtool are built on demand into their default
     # places under $PLAYPORT_BUILD/inputs; an overridden path must exist.
     if [ ! -x "$LD64" ] && [ "$LD64" = "$PLAYPORT_BUILD/inputs/apple-linker/prefix/bin/arm64-apple-darwin-ld" ]; then

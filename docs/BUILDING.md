@@ -13,7 +13,9 @@ says what the stage does, and `pp verify --help` lists the IPA checks.
 The same `pp setup`, `pp check`, `pp build` and `pp install` commands are used
 on macOS. Xcode supplies the iPhoneOS/macOS SDKs and Apple linker; the SDK
 version is discovered with `xcrun`, rather than requiring the Linux SDK bundle's
-26.5 directory names. This extends upstream's analysis-only Mac workflow
+26.5 directory names. The inputs stage also builds the pinned classic ld64 for
+GStreamer archive prelinking: current Xcode ld removed the required `-d` flag.
+The final app link uses Xcode. This extends upstream's analysis-only Mac workflow
 ([0031](decisions/0031-a-mac-for-analysis-only.md)). Linux keeps its existing
 cross-toolchain, slim SDK and netmuxd setup.
 
