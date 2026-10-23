@@ -21,7 +21,8 @@ class MacSetup(unittest.TestCase):
             self.assertEqual(machine.phonelib.lockdown_domain_args("disk"), ["disk"])
 
     def test_xcode_and_system_usbmux_are_selected_only_on_mac(self):
-        with patch.object(sys, "platform", "darwin"), patch.object(machine, "out", return_value="/Xcode/Developer\n"):
+        with patch.dict(os.environ, {"DARWIN_SDK": "", "DEVELOPER_DIR": ""}), \
+                patch.object(sys, "platform", "darwin"), patch.object(machine, "out", return_value="/Xcode/Developer\n"):
             self.assertEqual(machine.find_darwin_sdk(), "/Xcode/Developer")
             self.assertEqual(machine.find_socket(), "/var/run/usbmuxd")
         with patch.object(sys, "platform", "linux"), patch.object(machine.phonelib, "netmuxd_unit_socket", return_value="/netmuxd"):

@@ -382,6 +382,12 @@ enum UIDriver {
                 case "probe":
                     let probe = HelperLifetimeProbe.shared
                     switch id {
+                    case "pairing-isolation":
+                        _ = AppNavigation.shared.open("settings")
+                        AppNavigation.shared.pageSection = "probes"
+                        do { try await BuiltInJit.checkIsolation() }
+                        catch { return finish("action=\(action) failed: \(error)") }
+                        log("keychain isolation: helper read passed; main read denied")
                     case "helper-exit", "helper-kill", "helper-exit-hold", "helper-kill-hold":
                         guard done + 1 == actions.count else { return finish("action=\(action) refused: it must be the last action") }
                         if let failure = await probe.run(id.hasPrefix("helper-exit") ? .exit : .kill, hold: id.hasSuffix("-hold")) {

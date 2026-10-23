@@ -9,7 +9,7 @@ from pathlib import Path
 import subprocess
 
 TARGET = "aarch64-apple-ios"
-FEATURES = "ring,tcp,core_device,core_device_proxy,tunnel_tcp_stack,rsd"
+FEATURES = "ring,tcp,core_device,core_device_proxy,tunnel_tcp_stack,rsd,debug_proxy,mobile_image_mounter,cryptexd,dvt"
 
 
 def resolve(src, rust, version, cache=None):

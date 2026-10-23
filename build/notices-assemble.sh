@@ -59,7 +59,7 @@ DXVK=${DXVK:-$RUN/vulkan-pe/dxvk}
 VKD3D=${VKD3D:-$RUN/vulkan-pe/vkd3d-proton}
 GBE=${GBE:-$RUN/steamapi/gbe}
 ABSL=${ABSL:-$RUN/steamapi/abseil-cpp}
-STIKJIT=${STIKJIT:-$PLAYPORT_BUILD/cache/stikjit-$(pin stikjit)/src}
+STIKJIT=${STIKJIT:-$RUN/stikjit-src}
 RUST_NOTICE_CARGO_HOME=${RUST_NOTICE_CARGO_HOME:-$RUST_ROOT/cargo}
 export RUST_NOTICE_CARGO_HOME
 IDEVICE_RUN=${IDEVICE_RUN:-$RUN/idevice}
@@ -214,7 +214,7 @@ cp_ abseil-cpp-LICENSE.txt "$ABSL/LICENSE"
 # MoltenVK (Apache-2.0) in GStreamer's iOS release: its licence at the SDK's MoltenVK tag
 # (build/notices-extra/sources.json, decision 0042)
 cp_ MoltenVK-LICENSE.txt "$REPO/build/notices-extra/MoltenVK-LICENSE"
-# StikJIT (MPL-2.0), unmodified in the JIT helper extension's Frameworks/
+# StikJIT (MPL-2.0), source-built with the repository patch series
 cp_ StikJIT-LICENSE.txt "$STIKJIT/LICENSE"
 # idevice's pinned notice bytes (MIT), for the executable and for the idevice inside StikJIT (decision 0042)
 cp_ idevice-LICENSE.txt "$IDEVICE/LICENSE.txt"

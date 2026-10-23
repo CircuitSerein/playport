@@ -79,7 +79,7 @@ class UiEnvTest(unittest.TestCase):
         not end the run, the UI's does."""
         m = load()
         for ok in ("play:app-367520", "probe:relaunch", "probe:helper-kill-hold", "probe:helper-report", "probe:native-auth",
-                   "probe:pairing", "probe:pairing-cancel", "probe:pairing-use",
+                   "probe:pairing", "probe:pairing-cancel", "probe:pairing-use", "probe:pairing-isolation",
                    "jit:setup", "jit:pair", "jit:continue", "jit:open-settings", "jit:cancel", "jit:wait",
                    "probe:settings-url-0", "probe:settings-url-5"):
             self.assertTrue(m.ACTION_RE.match(ok), ok)

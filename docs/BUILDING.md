@@ -70,7 +70,7 @@ socket, in `$PLAYPORT_BUILD/inputs.local` (gitignored; `build/env.sh` and
 | `LLVM_MINGW` | llvm-mingw 20260922 UCRT, with its aarch64 CRT rebuilt for arm64ec | below |
 | `DARWIN_SDK` | xtool's SDK bundle (`iPhoneOS26.5.sdk`, `MacOSX26.5.sdk`) | `xtool sdk install <Xcode 26.6 .xip> --slim` |
 | `LD64` | Apple ld64-956.6 for Linux | `build/toolchain/ld64.sh` ("Linking") |
-| `XTOOL` | xtool 1.23.0 with the increased-memory-limit patch | `build/toolchain/xtool.sh` ("Signing") |
+| `XTOOL` | xtool 1.23.0 with memory and per-bundle signing patches | `build/toolchain/xtool.sh` ("Signing") |
 | `RUST_ROOT` | the `pins.lock` `rust` release with the `aarch64-apple-ios` standard library, through rustup (`rustup-init` checked by sha256), with its crate cache | `build/toolchain/rust.sh` (the `idevice` stage) |
 
 Apple's Metal developer tools are not an input: the AIR helpers are
@@ -331,8 +331,11 @@ xtool runs: the per-target `-r` steps go to `ld64.lld`, every final link to ld64
 - **Patched xtool.** Stock xtool 1.20.1 silently drops the
   `com.apple.developer.kernel.increased-memory-limit` entitlement for a free
   team, and FEX then gets no JIT arena. `build/toolchain/xtool.sh` builds it
-  with `build/toolchain/xtool-1.20.1-increased-memory-limit.diff`; the
-  pipeline refuses an `XTOOL` without it.
+  with `patches/xtool` and `patches/zsign`. The former memory-only diff is
+  adopted when rebuilding an existing local installation. The signer preserves
+  each app/extension's own profile and Keychain group; `pp verify` rejects a
+  helper that shares the main app's default group. The pipeline still refuses
+  an `XTOOL` without the memory entitlement.
 - **Account.** `xtool auth login` once, from a terminal; bare `xtool auth` is
   the login and fails without one.
 - **Identity.** One bundle ID for both variants, signed as

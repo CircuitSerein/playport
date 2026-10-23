@@ -5377,7 +5377,7 @@ link	lib/libnettle.a	1683328	e5c7bb144911e49de3932e60c82fcd9d5219768be8be6d189b1
 link	lib/libgmp.a	883136	53e056981a9a236df07a1966873eb7d06ddc9b9fed2a66e49721f43f39de2520	unix	mythic/toolchains/gnutls-ios/lib/libgmp.a	P4-crypto
 link	lib/libdxmt_combined.a	113893208	17f701f39e776455bc45adaeee51ecdcba2056a6d1080ad43b02326de8236583	dxmt	libdxmt_combined.a	P5-dxmt
 link	lib/libwinegstreamer_unix.a	47458208	ef403f2337e07d89d4202facf6fe6e8c6bfe20d4b66f34af35836ee4933e0f9f	unix	gstreamer/libwinegstreamer_unix.a	P6-gst
-link	lib/libidevice_ffi.a	6520280	db617222fee518918b4d2721549166fe3135b4c5013ed079ad77328c6be0e6e0	idevice	libidevice_ffi.a	P10-idevice
+link	lib/libidevice_ffi.a	7582912	2b349a8232166452c3b48b37e57b690a6bada94502cf02cd49173618df77b369	idevice	libidevice_ffi.a	P10-idevice
 source	WinIOS/Winios.m	66281	e8b35307a8e34928582f46d13eed31eff10850c4205f89e6fed443dfdbfcf6a2	unix	mythic/app/Madeira/Winios/Winios.m	P5-winios
 source	WinIOS/include/Winios.h	3356	6d99fe3b4ce537bef3e6feecb01cde78fd899b801772e63e652470c9b67fe001	unix	mythic/app/Madeira/Winios/Winios.h	P5-winios
 source	WinIOS/WiniosGamepad.c	1458	dce042c25dfe9530f9575053c7a1d9d1fbcfe893ca84b8a76adbc0c4eda5200c	unix	mythic/app/Madeira/Winios/WiniosGamepad.c	P5-winios
