@@ -471,7 +471,7 @@ digest_inputs() {
                 after pe ;;
         steamapi) pins gbe abseil-cpp; series_text gbe; files build/stages/steamapi.sh build/steamapi-vtables.py ;;
         idevice) pins idevice rust; series_text idevice; files build/stages/idevice.sh build/idevice-crates.py ;;
-        stage) pins stikjit idevice ca-bundle wine-mono; series_text madeira-winios
+        stage) pins stikjit idevice ca-bundle wine-mono; series_text madeira-winios stikjit
                files build/stages/stage-artifacts.py build/stages/stikjit.sh build/stages/ca-bundle.sh build/stages/wine-mono.sh \
                      app/registry app/artifacts.tsv \
                      app/tools/prefix-registry.py \
