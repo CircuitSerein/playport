@@ -89,6 +89,16 @@ def pmd_env():
     return dict(os.environ, USBMUXD_SOCKET_ADDRESS=SOCK)
 
 
+def lockdown_domain_args(domain):
+    """pymobiledevice3's old --domain option became positional in newer releases."""
+    try:
+        help_text = subprocess.run(["pymobiledevice3", "lockdown", "get", "--help"],
+                                   capture_output=True, text=True, timeout=15, check=True).stdout
+    except (OSError, subprocess.SubprocessError) as exc:
+        raise PhoneError("could not inspect pymobiledevice3 lockdown get options") from exc
+    return ["--domain", domain] if "--domain" in help_text else [domain]
+
+
 def pmd_python():
     """pymobiledevice3's own Python: the interpreter its launcher on PATH names."""
     exe = shutil.which("pymobiledevice3")

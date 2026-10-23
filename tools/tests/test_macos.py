@@ -13,6 +13,13 @@ import machine
 
 
 class MacSetup(unittest.TestCase):
+    def test_lockdown_domain_supports_both_cli_generations(self):
+        with patch.object(machine.phonelib.subprocess, "run") as run:
+            run.return_value = subprocess.CompletedProcess([], 0, "--domain TEXT", "")
+            self.assertEqual(machine.phonelib.lockdown_domain_args("disk"), ["--domain", "disk"])
+            run.return_value = subprocess.CompletedProcess([], 0, "get [domain] [key]", "")
+            self.assertEqual(machine.phonelib.lockdown_domain_args("disk"), ["disk"])
+
     def test_xcode_and_system_usbmux_are_selected_only_on_mac(self):
         with patch.object(sys, "platform", "darwin"), patch.object(machine, "out", return_value="/Xcode/Developer\n"):
             self.assertEqual(machine.find_darwin_sdk(), "/Xcode/Developer")
