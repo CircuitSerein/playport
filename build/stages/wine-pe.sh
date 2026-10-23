@@ -53,13 +53,15 @@ configured() { [ -f "$WINE/$1/Makefile" ] && [ "$(cat "$WINE/$1/.pp-configured" 
 #    tools tree, so create that link too.
 GST=$(bash "$HERE/gstreamer.sh" fetch)
 KEY=$({ sha256sum "$HERE/wine-pe.sh" "$WINE/configure"; echo "$M $MACSDK $GST"
-        /usr/bin/clang --version; "$M/bin/clang" --version; } | sha256sum | cut -c1-16)
+        ${HOST_CLANG:-/usr/bin/clang} --version; "$M/bin/clang" --version; } | sha256sum | cut -c1-16)
 if configured build-tools; then
     echo "build-tools: configured as before; make rebuilds what changed"
 else
     rm -rf "${WINE:?}/build-tools"; mkdir "$WINE/build-tools"
+    mingw=(--without-mingw)
+    [ "$(uname -s)" != Darwin ] || mingw=(--with-mingw="$M/bin/clang" --enable-archs=aarch64)
     ( cd "$WINE/build-tools" &&
-      ../configure --enable-win64 --without-x --without-freetype --without-mingw --disable-tests \
+      ../configure --enable-win64 --without-x --without-freetype "${mingw[@]}" --disable-tests \
           > "$OUT/config-build-tools.log" 2>&1 ) && echo "$KEY" > "$WINE/build-tools/.pp-configured"
 fi
 ( cd "$WINE/build-tools" &&
@@ -69,7 +71,7 @@ fi
 # 3. Two darwin-host trees: build-macos supplies i386 + aarch64-windows
 #    (new WoW64), build-arm64ec supplies arm64ec-windows.
 #    PE code is compiled by llvm-mingw's clang in MSVC mode (--with-mingw=clang
-#    path -> -target <cpu>-windows); host code by /usr/bin/clang for darwin.
+#    path -> -target <cpu>-windows); host code by the host clang for darwin.
 #    CROSSLDFLAGS=-Wl,-Brepro makes lld-link write a content-hash timestamp
 #    instead of the link time, and CROSSCFLAGS (configure's default -g -O2)
 #    maps the tree and llvm-mingw out of the debug info, so the PE checksums
@@ -126,10 +128,10 @@ configure_tree() {
     fi
     rm -rf "${WINE:?}/${1:?}"; mkdir "$WINE/$1"
     ( cd "$WINE/$1" &&
-      CC="/usr/bin/clang --target=aarch64-apple-darwin -isysroot $MACSDK" \
-      CXX="/usr/bin/clang++ --target=aarch64-apple-darwin -isysroot $MACSDK" \
-      OBJC="/usr/bin/clang -x objective-c --target=aarch64-apple-darwin -isysroot $MACSDK" \
-      AR=/usr/bin/llvm-ar RANLIB=/usr/bin/llvm-ranlib STRIP=/usr/bin/llvm-strip \
+      CC="${HOST_CLANG:-/usr/bin/clang} --target=aarch64-apple-darwin -isysroot $MACSDK" \
+      CXX="${HOST_CLANGXX:-/usr/bin/clang++} --target=aarch64-apple-darwin -isysroot $MACSDK" \
+      OBJC="${HOST_CLANG:-/usr/bin/clang} -x objective-c --target=aarch64-apple-darwin -isysroot $MACSDK" \
+      AR="${HOST_LLVM_BIN:-/usr/bin}/llvm-ar" RANLIB="${HOST_LLVM_BIN:-/usr/bin}/llvm-ranlib" STRIP="${HOST_LLVM_BIN:-/usr/bin}/llvm-strip" \
       LDFLAGS="-fuse-ld=lld" CROSSLDFLAGS="-Wl,-Brepro" \
       GSTREAMER_CFLAGS="-I$OUT/gst-macos -I$GST/Headers" GSTREAMER_LIBS="-Wl,-undefined,dynamic_lookup" \
       CROSSCFLAGS="-g -O2 -ffile-prefix-map=$WINE=wine -ffile-prefix-map=$M=llvm-mingw" \

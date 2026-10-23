@@ -21,12 +21,12 @@
 # first use. Nothing is installed; all output stays under ROOT.
 set -euo pipefail
 
+. "$(dirname "$0")/../lib.sh"
 ROOT=$(realpath -m "${1:?usage: $0 ROOT [stage...]}")
 shift
 STAGES=${*:-llvm air}
 HERE=$(dirname "$(realpath "$0")")
 PROBE=$HERE/probe
-. "$HERE/../lib.sh"
 DXB=${DXMT_BUILD_ROOT:-$ROOT/dxmt-build}
 B=$ROOT/llvm15/bin
 HELPERS="air_msad air_samplepos air_tessellation"

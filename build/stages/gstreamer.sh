@@ -93,7 +93,7 @@ C
     } > "$out/plugins.c"
     # The flags of Madeira's compile_unixlib (build/ntdll-unix/build.sh), with
     # GStreamer's headers; the tree and the SDK are mapped out of the object.
-    cc=(/usr/bin/clang --target=arm64-apple-ios17.0 -isysroot "$IOSSDK"
+    cc=("${HOST_CLANG:-/usr/bin/clang}" --target=arm64-apple-ios17.0 -isysroot "$IOSSDK"
         -O2 -fPIC -fvisibility=hidden -fno-stack-protector -fno-strict-aliasing
         -Wno-implicit-function-declaration -Wno-int-conversion -Wno-unused-command-line-argument
         "-ffile-prefix-map=$root=unix" "-ffile-prefix-map=$DARWIN_SDK=darwin-sdk"

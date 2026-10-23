@@ -68,7 +68,7 @@ sys.path.insert(0, os.path.join(REPO, "build"))
 import inputs  # noqa: E402
 
 # netmuxd's socket (pp setup records it; build/install reads the same variable).
-SOCK = inputs.get("PLAYPORT_USBMUX_SOCKET")
+SOCK = inputs.get("PLAYPORT_USBMUX_SOCKET") or ("/var/run/usbmuxd" if sys.platform == "darwin" else None)
 DEVICE_DIR = os.environ.get("PLAYPORT_DEVICE_DIR") or str(inputs.BUILD)  # as inputs.DEVICE_DIR
 LOCK = os.environ.get("PLAYPORT_DEVICE_LOCK") or os.path.join(DEVICE_DIR, "device.lock")
 HOLDER = os.path.join(os.path.dirname(LOCK), "device.holder.json")
@@ -430,7 +430,10 @@ class Phone:
 
     # -- the phone
     def devices(self):
-        text = self.pmd("usbmux", "usbmux", "list", secs=30, check=False)
+        # Apple's usbmuxd lists a cabled iPhone again over Wi-Fi. The native
+        # Mac workflow uses USB, so the one-phone guard still counts phones.
+        transport = ["--usb"] if sys.platform == "darwin" else []
+        text = self.pmd("usbmux", "usbmux", "list", *transport, secs=30, check=False)
         if self.dry:
             return [{}]
         with contextlib.suppress(OSError):
